@@ -111,10 +111,10 @@ def batch_generator(df, img_dir, input_size, batch_size, num_label, slide,
 
         index_array_batch = index_array[current_index: current_index + current_batch_size]
         batch_img_path = df['file_name'][index_array_batch].apply(
-            lambda x: img_dir + x + tail + '.png').as_matrix()
+            lambda x: img_dir + x + tail + '.png').to_numpy()
         # print(batch_img_path)
-        batch_coord_x = (df['x'][index_array_batch] + 30).as_matrix()
-        batch_coord_y = (df['y'][index_array_batch] + 30).as_matrix()
+        batch_coord_x = (df['x'][index_array_batch] + 30).to_numpy()
+        batch_coord_y = (df['y'][index_array_batch] + 30).to_numpy()
         # print(batch_img_path[0], batch_coord_x[0], batch_coord_y[0], mergin)
         batch_x = pool.map(load_img,
                            [(batch_img_path[i],
@@ -129,7 +129,7 @@ def batch_generator(df, img_dir, input_size, batch_size, num_label, slide,
         batch_x = batch_x.astype(np.float32) / 255
         # print(batch_x.shape)
 
-        batch_y = df['label'][index_array[current_index: current_index + current_batch_size]].as_matrix()
+        batch_y = df['label'][index_array[current_index: current_index + current_batch_size]].to_numpy()
         batch_y = np.eye(num_label)[batch_y]
 
         yield batch_x, batch_y
