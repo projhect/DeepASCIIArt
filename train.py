@@ -187,7 +187,10 @@ def train():
 
     format = "%H%M"
     ts = time.strftime(format)
-    save_path = "model/" + path.splitext(__file__)[0] + "_" + ts
+    current_file_directory = path.dirname(path.abspath(__file__))
+    model_directory = path.join(current_file_directory, "model")
+    filename_without_extension = path.splitext(path.basename(__file__))[0]
+    save_path = path.join(model_directory, filename_without_extension + "_" + ts)
 
     json_string = model.to_json()
     with open(save_path + '_model.json', "w") as f:
